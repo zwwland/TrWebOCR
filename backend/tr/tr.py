@@ -251,7 +251,7 @@ def fixed_res(results):
         if len(new_results) == 0:
             new_results.append(result)
             continue
-        print(result)
+        # print(result)
         angle = math.atan((result[0][1]-new_results[index][0][1]) / (result[0][0]-new_results[index][0][0])) * 60
         a_x = (new_results[index][0][4] - angle) ** 2
         b_x = (result[0][4] - angle) ** 2
