@@ -3,6 +3,7 @@ import os
 import platform
 import ctypes
 import numpy as np
+import math
 
 try:
     unichr
@@ -237,8 +238,33 @@ def run(img,
         num = int(rect_arr[i][-1] + 0.5)
         txt, confidence = _parse(unicode_arr[i], prob_arr[i], num)
         results.append((rect_arr[i][:5].tolist(), txt, confidence))
+    return fixed_res(results)
 
-    return results
+
+def fixed_res(results):
+    """修复文本不在一行
+    #TODO 修复坐标信息
+    """
+    new_results = []
+    index = 0
+    for result in results:
+        if len(new_results) == 0:
+            new_results.append(result)
+            continue
+        print(result)
+        angle = math.atan((result[0][1]-new_results[index][0][1]) / (result[0][0]-new_results[index][0][0])) * 60
+        a_x = (new_results[index][0][4] - angle) ** 2
+        b_x = (result[0][4] - angle) ** 2
+        if a_x > 2:
+            new_results.append(result)
+            index += 1
+        else:
+            modified_result = list(new_results[index])
+            modified_result[1] += result[1]
+            new_results[index]= tuple(modified_result)
+    return new_results
+        
+
 
 
 init(0, 0, "ctpn.bin")
