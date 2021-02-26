@@ -251,7 +251,7 @@ def fixed_res(results):
         if len(new_results) == 0:
             new_results.append(result)
             continue
-        # fixed devilate 
+        # fixed: divide by 0
         if (result[0][0]-new_results[index][0][0]) == 0:
             new_results.append(result)
             index += 1
